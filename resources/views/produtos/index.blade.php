@@ -6,7 +6,6 @@
 <div class="row">
     <div class="col">
         <p>Sejam bem-vindos à página de produtos</p>
-
         <a class="btn btn-primary" href="{{route('produtos.inserir')}}" role="button">Cadastrar produto</a>
     </div>
 </div>
@@ -28,7 +27,9 @@
             </td>
             <td>R$ {{$prod->preco}}</td>
             <td>
-                <a href="{{ route('produtos.edit', $prod) }}" class="btn btn-primary btn-sm" role="button"><i class="bi bi-pencil-square"></i> Editar</a>
+                @if (Auth::user()->admin == true)
+                    <a href="{{ route('produtos.edit', $prod) }}" class="btn btn-primary btn-sm" role="button"><i class="bi bi-pencil-square"></i> Editar</a>
+                @endif
                 <a href="{{ route('produtos.remove', $prod) }}" class="btn btn-danger btn-sm" role="button"><i class="bi bi-trash"></i> Apagar</a>
             </td>
         </tr>
