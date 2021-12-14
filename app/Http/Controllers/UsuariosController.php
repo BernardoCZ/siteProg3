@@ -6,6 +6,7 @@ use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 
 class UsuariosController extends Controller
 {
@@ -23,11 +24,9 @@ class UsuariosController extends Controller
 
     public function insert(Request $form)
     {
-        if ($form->admin == null)
-        {
-            $form->admin = false;
-        }
-        else if ($form->admin == "on")
+        $form->admin = false;
+        
+        if ($form->admin == "on")
         {
             $form->admin = true;
         }
@@ -41,7 +40,11 @@ class UsuariosController extends Controller
 
         $usuario->save();
 
-        return redirect()->route('usuarios.index');
+        event(new Registered($usuario));
+
+        Auth::login($usuario);
+
+        return redirect()->route('verification.notice');
     }
 
     // Ações de login
@@ -54,9 +57,16 @@ class UsuariosController extends Controller
                 'username' => ['required'],
                 'password' => ['required'],
             ]);
+
+            $lembrado = false;
+            
+            if ($form->lembrar == "on")
+            {
+                $lembrado = true;
+            }
                
             // Tenta o login
-            if (Auth::attempt($credenciais)) {
+            if (Auth::attempt($credenciais, $lembrado)) {
                 session()->regenerate();
                 return redirect()->route('home');
             }

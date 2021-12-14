@@ -14,7 +14,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
-
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/5.1/examples/sign-in/signin.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -25,6 +26,11 @@
         user-select: none;
       }
 
+      .form-signin {
+        max-width: none;
+        width: auto;
+      }
+
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
@@ -32,48 +38,17 @@
       }
     </style>
 
-    
-    <!-- Custom styles for this template -->
-    <link href="https://getbootstrap.com/docs/5.1/examples/sign-in/signin.css" rel="stylesheet">
   </head>
   <body class="text-center">
     
-<main class="form-signin">
+    <main class="form-signin">
+        <div class="p-5 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-5 text-center">
+                <h1 class="display-5 fw-bold">Verificação de Email</h1>
+                <p class="fs-4">Um email foi enviado para o endereço informado. Verifique para concluir a configuração de sua conta.</p>
+            </div>
+        </div>
+    </main>
 
-    @if (session('erro'))
-    
-    <!-- Erro -->
-    <div class="alert alert-danger" role="alert">
-    {{ session('erro') }}
-    </div>
-
-    @endif
-
-  <form method="post" action="{{ route('login') }}">
-    @csrf
-
-    <h1 class="h3 mb-3 fw-normal">Faça seu login</h1>
-
-    <div class="form-floating">
-      <input type="text" class="form-control" id="floatingInput" placeholder="Usuário" name="username">
-      <label for="floatingInput">Usuário</label>
-    </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Senha" name="password">
-      <label for="floatingPassword">Senha</label>
-    </div>
-
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" name="lembrar"> Lembrar
-      </label>
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Entrar</button>
-    
-  </form>
-</main>
-
-
-    
   </body>
 </html>
