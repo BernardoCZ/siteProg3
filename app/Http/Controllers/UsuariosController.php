@@ -89,4 +89,8 @@ class UsuariosController extends Controller
 
         return redirect('/');
     }
+    public function profile()
+    {
+        return view('usuarios.profile');
+    }
 }

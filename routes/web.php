@@ -58,3 +58,5 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     $request->fulfill();
     return redirect()->route('home');
 })->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::get('/profile', [UsuariosController::class, 'profile'])->name('profile');
