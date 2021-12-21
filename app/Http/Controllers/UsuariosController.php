@@ -91,6 +91,46 @@ class UsuariosController extends Controller
     }
     public function profile()
     {
-        return view('usuarios.profile');
+        return view('usuarios.profile', ['pagina' => 'perfil']);
+    }
+    public function edit()
+    {
+        return view('usuarios.edit', ['usuario' => Auth::user(), 'pagina' => 'editar_perfil']);
+    }
+    public function update(Request $form)
+    {
+        $usuario = Auth::user();
+        $usuario->name = $form->name;
+        $usuario->email = $form->email;
+
+        $usuario->save();
+
+        return redirect()->route('profile');
+    }
+    public function alterar_senha()
+    {
+        return view('usuarios.alterar_senha', ['usuario' => Auth::user(), 'pagina' => 'editar_senha']);
+    }
+    public function update_senha(Request $form)
+    {
+        $usuario = Auth::user();
+        if ($usuario->password == Hash::make($form->password))
+        {
+            if ($form->new_password == $form->confirm_password)
+            {
+                $usuario->password = Hash::make($form->new_password);
+                $usuario->save();
+            }
+            else
+            {
+                return redirect()->route('profile.senha')->with('erro', 'A senha de confirmação é diferente da nova senha.');
+            }
+        }
+        else
+        {
+            return redirect()->route('profile.senha')->with('erro', 'Senha atual inválida.');
+        }
+
+        return redirect()->route('profile');
     }
 }

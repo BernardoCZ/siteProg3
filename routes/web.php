@@ -60,3 +60,9 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::get('/profile', [UsuariosController::class, 'profile'])->name('profile');
+
+Route::get('/profile/edit', [UsuariosController::class, 'edit'])->middleware('auth')->name('profile.edit');
+Route::put('/profile/edit', [UsuariosController::class, 'update'])->name('profile.update');
+
+Route::get('/profile/password', [UsuariosController::class, 'alterar_senha'])->middleware('auth')->name('profile.senha');
+Route::put ('/profile/password', [UsuariosController::class, 'update_senha'])->middleware('auth')->name('profile.update_senha');
