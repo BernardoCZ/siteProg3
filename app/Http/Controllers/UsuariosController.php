@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class UsuariosController extends Controller
 {
@@ -24,11 +26,14 @@ class UsuariosController extends Controller
 
     public function insert(Request $form)
     {
-        $form->admin = false;
-        
+
         if ($form->admin == "on")
         {
             $form->admin = true;
+        }
+        else
+        {
+            $form->admin = false;
         }
         $usuario = new Usuario();
 
@@ -101,7 +106,11 @@ class UsuariosController extends Controller
     {
         $usuario = Auth::user();
         $usuario->name = $form->name;
-        $usuario->email = $form->email;
+        if($usuario->email != $form->email){
+            $usuario->email = $form->email;
+            $usuario->email_verified_at = null;
+            $usuario->sendEmailVerificationNotification();
+        }
 
         $usuario->save();
 
@@ -114,7 +123,14 @@ class UsuariosController extends Controller
     public function update_senha(Request $form)
     {
         $usuario = Auth::user();
-        if ($usuario->password == Hash::make($form->password))
+        
+        $validate = $form->validate([
+            'password' => ['required'],
+            'new_password' => ['required'],
+            'confirm_password' => ['required']
+        ]);
+
+        if (Hash::check($form->password, $usuario->password))
         {
             if ($form->new_password == $form->confirm_password)
             {
@@ -123,12 +139,12 @@ class UsuariosController extends Controller
             }
             else
             {
-                return redirect()->route('profile.senha')->with('erro', 'A senha de confirmação é diferente da nova senha.');
+                return redirect()->route('profile.senha')->with('erro', 'Confirme sua nova senha.');
             }
         }
         else
         {
-            return redirect()->route('profile.senha')->with('erro', 'Senha atual inválida.');
+            return redirect()->route('profile.senha')->with('erro', 'Senha atual incorreta.');
         }
 
         return redirect()->route('profile');
