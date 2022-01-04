@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProdutosController extends Controller
 {
@@ -67,6 +68,19 @@ class ProdutosController extends Controller
         $prod->delete();
 
         return redirect()->route('produtos');
+    }
+
+    public function recorte(Request $form, Produto $prod)
+    {
+        if ($form->isMethod('POST'))
+        {
+            $img64 = explode(",", $form->img);
+            $img64 = base64_decode($img64[1]);
+            Storage::disk('imagens')->put($prod->imagem, $img64);
+
+            return redirect()->route('produtos');
+        }
+        return view('produtos.recorte', ['prod' => $prod, 'pagina' => 'produtos']);
     }
 
 }

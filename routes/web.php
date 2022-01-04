@@ -36,6 +36,10 @@ Route::get('/produtos/{prod}/apagar', [ProdutosController::class, 'remove'])->na
 
 Route::delete('/produtos/{prod}/apagar', [ProdutosController::class, 'delete'])->name('produtos.delete');
 
+Route::get('/produtos/{prod}/recortar', [ProdutosController::class, 'recorte'])->name('produtos.recorte');
+
+Route::post('/produtos/{prod}/recortar', [ProdutosController::class, 'recorte'])->name('produtos.cut');
+
 Route::get('usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
 
 Route::prefix('usuarios')->group(function() {
