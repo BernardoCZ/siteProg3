@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProdutosController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\ImagensController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -70,3 +71,15 @@ Route::put('/profile/edit', [UsuariosController::class, 'update'])->name('profil
 
 Route::get('/profile/password', [UsuariosController::class, 'alterar_senha'])->middleware('auth')->name('profile.senha');
 Route::put ('/profile/password', [UsuariosController::class, 'update_senha'])->middleware('auth')->name('profile.update_senha');
+
+// Rota para acessar a galeria
+Route::get('galeria', [ImagensController::class, 'index'])->name('galeria');
+
+// Rota para acessar a página de inserção de imagem
+Route::get('/galeria/inserir', [ImagensController::class, 'create'])->name('galeria.inserir');
+
+// Rota que insere a imagem e seus dados no banco
+Route::post('/galeria/inserir', [ImagensController::class, 'insert'])->name('galeria.gravar');
+
+// Rota para acessar página de visualização da imagem especificada em "img"
+Route::get('/galeria/{img}', [ImagensController::class, 'show'])->name('galeria.show');
